@@ -6,7 +6,7 @@
 //
 //   node main.ts            (MAKEFUN_OUTPUT_DIR stands in for /output)
 
-import { cpSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
+import { cpSync, existsSync, mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { buildDossier } from './vendor/makefun-game.ts';
@@ -21,13 +21,18 @@ const DOSSIER_CAPS = {
   screenshots: { max: 4, max_bytes: 262144 },
   game_max_files: 993,
   game_max_bytes: 50331648,
+  game_path_max_bytes: 1000,
 };
 
+// The grader hands us an empty, writable output directory that is not
+// ours to remove (it is a mount point on a read-only file system), so we
+// only ever create and fill directories inside it, never delete it.
 function copyEntry() {
-  rmSync(outputDir, { recursive: true, force: true });
   mkdirSync(outputDir, { recursive: true });
-  for (const part of ['game', 'screenshots']) {
-    cpSync(join(repoRoot, part), join(outputDir, part), { recursive: true });
+  cpSync(join(repoRoot, 'game'), join(outputDir, 'game'), { recursive: true });
+  mkdirSync(join(outputDir, 'screenshots'), { recursive: true });
+  if (existsSync(join(repoRoot, 'screenshots'))) {
+    cpSync(join(repoRoot, 'screenshots'), join(outputDir, 'screenshots'), { recursive: true });
   }
 }
 
