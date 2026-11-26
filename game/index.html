@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kestrel Ridge — a valley flight game</title>
+<style>
+  html, body { margin: 0; padding: 0; height: 100%; background: #0b1020; overflow: hidden; }
+  body { font-family: Georgia, 'Times New Roman', serif; }
+  #stage { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; }
+  canvas { display: block; background: #87a6c8; box-shadow: 0 0 60px rgba(0,0,0,.55); }
+  #fallback { color: #dfe8f5; text-align: center; padding: 2rem; display: none; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <canvas id="game" width="1280" height="720"></canvas>
+  <div id="fallback">
+    <h1>Kestrel Ridge</h1>
+    <p>This game needs a browser with JavaScript and a keyboard or mouse.</p>
+  </div>
+</div>
+<script>
+  if (!window.HTMLCanvasElement) document.getElementById('fallback').style.display = 'block';
+</script>
+<script type="module" src="src/main.js"></script>
+</body>
+</html>
